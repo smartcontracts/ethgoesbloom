@@ -22,17 +22,39 @@ def in_bloom(bloom_filter, value):
         in get_bloom_bits(value)
     )
 
+def in_bloom_last(bloom_filter, value, hits):
+    num_hits = sum((bloom_filter.value & bloom_bits) != 0 for bloom_bits in get_bloom_bits(value))
+    return num_hits == hits
+
+def bloom_count(filter_value):
+    return '{0:b}'.format(filter_value).count('1')
+
+def bloom_complete(filter_value):
+    return bloom_count(filter_value) == 2048
+
 
 bloom_filter = BloomFilter()
 events = []
 tick = datetime.datetime.now()
-max_events = 600
+max_events = 665
+
 while len(events) < max_events:
     topic = get_topic_bits()
     topic_bytes = topic.to_bytes(32, byteorder='little')
     if not in_bloom(bloom_filter, topic_bytes):
+        print(bloom_count(bloom_filter.value))
         bloom_filter.add(topic_bytes)
         events.append(topic)
+
+print('Finding final bits')
+while not bloom_complete(bloom_filter.value):
+    topic = get_topic_bits()
+    topic_bytes = topic.to_bytes(32, byteorder='little')
+    if in_bloom_last(bloom_filter, topic_bytes, 2):
+        print(bloom_count(bloom_filter.value))
+        bloom_filter.add(topic_bytes)
+        events.append(topic)
+
 tock = datetime.datetime.now()
 print(tock - tick)
 
@@ -44,5 +66,9 @@ c.testAssembly(calldata, transact={
 
 block = w3.eth.getBlock('latest')
 b = int.from_bytes(block.logsBloom, byteorder='big')
-print('{0:b}'.format(b).count('1'))
+print(len(events))
+print(bloom_count(bloom_filter.value))
+print(bloom_count(b))
 print(block.gasUsed)
+print('{0:b}'.format(b))
+print(b)

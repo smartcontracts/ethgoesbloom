@@ -118,10 +118,10 @@ class Deployer(object):
         contract = self.w3.eth.contract(abi=abi, bytecode=bytecode)
 
         # Get transaction hash from deployed contract
-        tx_hash = contract.deploy(transaction={
+        tx_hash = contract.constructor(*args).transact({
             'from': self.w3.eth.accounts[0],
             'gas': gas
-        }, args=args)
+        })
 
         # Get tx receipt to get contract address
         tx_receipt = self.w3.eth.getTransactionReceipt(tx_hash)

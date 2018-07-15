@@ -1,17 +1,19 @@
 pragma solidity ^0.4.0;
 
-import "./ByteUtils.sol";
 
 contract Test {
     function testAssembly(bytes logData) public {
-        for (uint i = 0; i < logData.length / 3; i += 4) {
-            assembly {
+        uint256 len = logData.length / 3;
+        uint256 a;
+        assembly {
+            for { let i := 0 } lt(i, len) { i := add(i, 4) } {
+                a := add(68, mul(i, 3))
                 log4(0x80,
                      0x0,
-                     and(calldataload(add(68, mul(i, 3))), 0xffffff0000000000000000000000000000000000000000000000000000000000),
-                     and(calldataload(add(68, mul(add(i, 1), 3))), 0xffffff0000000000000000000000000000000000000000000000000000000000),
-                     and(calldataload(add(68, mul(add(i, 2), 3))), 0xffffff0000000000000000000000000000000000000000000000000000000000),
-                     and(calldataload(add(68, mul(add(i, 3), 3))), 0xffffff0000000000000000000000000000000000000000000000000000000000))
+                     and(calldataload(a), 0xffffff0000000000000000000000000000000000000000000000000000000000),
+                     and(calldataload(add(a, 3)), 0xffffff0000000000000000000000000000000000000000000000000000000000),
+                     and(calldataload(add(a, 6)), 0xffffff0000000000000000000000000000000000000000000000000000000000),
+                     and(calldataload(add(a, 9)), 0xffffff0000000000000000000000000000000000000000000000000000000000))
             }
         }
     }
