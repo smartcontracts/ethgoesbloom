@@ -6,7 +6,7 @@
 
 You can install this project's requirements via `make`:
 
-```bash
+```
 $ make
 ```
 
@@ -14,7 +14,7 @@ $ make
 
 Run the demo by executing `main.py`:
 
-```bash
+```
 $ python main.py
 Compiling EthGoesBloom contract...
 Deploying EthGoesBloom contract...
@@ -31,7 +31,7 @@ Latest bloom filter:
 Run the project's tests via pytest:
 
 
-```bash
+```
 $ make test
 ```
 
@@ -39,6 +39,6 @@ $ make test
 
 Lint the project with flake8:
 
-```bash
+```
 $ make lint
 ```
