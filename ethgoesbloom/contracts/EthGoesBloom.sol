@@ -1,8 +1,8 @@
 pragma solidity ^0.4.0;
 
 
-contract Test {
-    function testAssembly(bytes logData) public {
+contract EthGoesBloom {
+    function sendLogs(bytes logData) public {
         uint256 len = logData.length / 3;
         uint256 a;
         assembly {

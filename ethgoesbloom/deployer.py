@@ -129,8 +129,6 @@ class Deployer(object):
 
         contract_instance = self.w3.eth.contract(address=contract_address, abi=abi)
 
-        print("Successfully deployed {0} contract!".format(contract_name))
-
         return ConciseContract(contract_instance) if concise else contract_instance
 
     def get_contract_at_address(self, contract_name, address, concise=True):
