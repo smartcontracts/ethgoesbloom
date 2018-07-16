@@ -1,5 +1,5 @@
 from ethgoesbloom.constants import BLOOM_FILTER_BITS
-from ethgoesbloom.miner import mine_topics, topics_to_calldata, num_filled_bits
+from ethgoesbloom.miner import topics_to_calldata, num_filled_bits
 from eth_bloom.bloom import BloomFilter
 
 
